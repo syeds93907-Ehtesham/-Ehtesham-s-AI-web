@@ -263,7 +263,7 @@ app.post('/api/management/login', (req: Request, res: Response) => {
       username: username || 'Event Admin',
     });
   } else {
-    res.status(401).json({ success: false, message: 'Invalid credentials. Default passcode is peace2026' });
+    res.json({ success: false, message: 'Invalid credentials. Default passcode is peace2026' });
   }
 });
 
