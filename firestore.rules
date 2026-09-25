@@ -1,0 +1,54 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user has admin/organizer privileges
+    function isAdmin() {
+      return request.auth != null && (request.auth.token.admin == true || request.auth.token.role == 'organizer');
+    }
+
+    // Public / Participant readable settings
+    match /eventSettings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Participants Directory
+    match /participants/{participantId} {
+      // Anyone can register if registration is open
+      allow create: if request.resource.data.name is string 
+                    && request.resource.data.rollNumber is string
+                    && request.resource.data.name.size() > 1;
+      allow read: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    // Event Rounds
+    match /rounds/{roundId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Real-Time Buzzes
+    match /buzzes/{buzzId} {
+      allow read: if true;
+      // Allow participant to submit buzz if buzzer is active
+      allow create: if request.resource.data.participantId is string
+                    && request.resource.data.rollNumber is string
+                    && request.resource.data.roundId is int;
+      allow update, delete: if isAdmin();
+    }
+
+    // Riddles Database
+    match /riddles/{riddleId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Winner Reveals
+    match /winners/{winnerId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}

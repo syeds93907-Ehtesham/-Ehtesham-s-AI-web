@@ -1,0 +1,6 @@
+{
+  "name": "Peace Day Gaming Arena",
+  "description": "College Peace Day Special Gaming Event - Think Fast. Buzz Faster. Have Fun! Live interactive buzzer, Hyderabadi riddles, and real-time management arena.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
